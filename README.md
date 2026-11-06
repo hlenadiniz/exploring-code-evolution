@@ -1,89 +1,63 @@
 # Explorando evolução de código
 
-Neste exercício, iremos explorar a evolução de código em sistemas reais.
+Este documento apresenta as respostas do exercício de exploração de evolução de código, realizado com a ferramenta [GitEvo](https://github.com/andrehora/gitevo). O relatório `HTML` gerado está disponível neste repositório em [report_transformers.html](report_transformers.html).
 
-Iremos utilizar a ferramenta [GitEvo](https://github.com/andrehora/gitevo).
-Essa ferramenta analisa a evolução de código em repositórios Git nas linguagens Python, JavaScript, TypeScript e Java, e gera relatórios `HTML` como [este](https://andrehora.github.io/gitevo-examples/python/pandas.html).
+## 1. Repositório selecionado
 
-Mais exemplos de relatórios podem ser podem ser encontrados em https://github.com/andrehora/gitevo-examples.
+[huggingface/transformers](https://github.com/huggingface/transformers) — biblioteca em Python que reúne implementações de modelos de aprendizado de máquina para texto, imagem e áudio.
 
-# Passo 1: Selecionar repositório a ser analisado
-
-Selecione um repositório relevante na linguagem de sua preferência (Python, JavaScript, TypeScript ou Java).
-Você pode encontrar projetos interessantes nos links abaixo:
-
-- Python: https://github.com/topics/python?l=python
-- JavaScript: https://github.com/topics/javascript?l=javascript
-- TypeScript: https://github.com/topics/typescript?l=typescript
-- Java: https://github.com/topics/java?l=java
-
-# Passo 2: Instalar e rodar a ferramenta GitEvo
-
-> [!NOTE]
-> Antes de instalar a ferramenta, é recomendado criar e ativar um [ambiente virtual Python](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments).
-
-Instale a ferramenta [GitEvo](https://github.com/andrehora/gitevo) com o comando:
-
-```
-$ pip install gitevo
-```
-
-Execute a ferramenta no repositório selecionado utilizando o comando abaixo (ajuste conforme a linguagem do repositório).
-Substitua `<git_url>` pela URL do repositório que será analisado:
+O relatório foi gerado com o comando:
 
 ```shell
-# Python
-$ gitevo -r python <git_url>
-
-# JavaScript
-$ gitevo -r javascript <git_url>
-
-# TypeScript
-$ gitevo -r typescript <git_url>
-
-# Java
-$ gitevo -r java <git_url>
+$ gitevo -r python https://github.com/huggingface/transformers
 ```
 
-Por exemplo, para analisar o projeto Flask escrito em Python:
+## 2. Gráfico selecionado
 
-```
-$ gitevo -r python https://github.com/pallets/flask
-```
+Gráfico **Data structures**, que apresenta a evolução da quantidade de ocorrências das estruturas de dados `list`, `tuple`, `dictionary` e `set` no código do repositório, entre 2021 e 2026.
 
-> [!NOTE]
-> Essa etapa pode demorar alguns minutos pois o projeto será clonado e analisado localmente.
+![Gráfico Data structures do repositório huggingface/transformers](grafico.png)
 
-# Passo 3: Explorar o relatório de evolução de código
+Os valores lidos do relatório são:
 
-Após executar a ferramenta [GitEvo](https://github.com/andrehora/gitevo), é gerado um relatório `HTML` contendo diversos gráficos sobre a evolução do código.
+| Ano  | list   | tuple  | dictionary | set   |
+| ---- | ------ | ------ | ---------- | ----- |
+| 2021 | 6.132  | 4.681  | 2.404      | 1.300 |
+| 2022 | 17.669 | 11.889 | 5.899      | 1.854 |
+| 2023 | 28.868 | 20.885 | 9.356      | 1.985 |
+| 2024 | 41.990 | 27.151 | 12.341     | 2.033 |
+| 2025 | 45.948 | 31.817 | 14.234     | 387   |
+| 2026 | 42.816 | 26.922 | 15.881     | 449   |
 
-Abra o relatório `HTML` e observe com atenção os gráficos.
+## 3. Explicação
 
-# Passo 4: Explicar um gráfico de evolução de código
+### Evolução de 2021 a 2024
 
-Selecione um dos gráficos de evolução e explique-o com suas palavras.
-Por exemplo, você pode:
+Nesse período, as quatro estruturas apresentam crescimento, em ritmos diferentes:
 
-- Detalhar a evolução ao longo do tempo
-- Detalhar se as curvas estão de acordo com boas práticas
-- Explicar grandes alterações nas curvas
-- Explorar a documentação do repositório em busca de explicações para grandes alterações
-- etc.
+- **`list`** é a estrutura mais frequente em todos os anos e cresce de 6.132 para 41.990 ocorrências, ou seja, cerca de 6,8 vezes.
+- **`tuple`** acompanha `list` com valores um pouco menores, de 4.681 para 27.151.
+- **`dictionary`** cresce de forma mais suave, de 2.404 para 12.341, e se mantém abaixo de `list` e `tuple`.
+- **`set`** é a menos utilizada e permanece praticamente estável, entre 1.300 e 2.033.
 
-Seja criativo!
+Esse crescimento é esperado, pois o repositório ganhou muitos modelos e funcionalidades nesse intervalo. Como o número de linhas de código aumenta, a quantidade de ocorrências de qualquer estrutura básica também tende a aumentar.
 
-# Instruções para o exercício
+### Mudança de comportamento em 2025 e 2026
 
-1. Crie um `fork` deste repositório (mais informações sobre forks [aqui](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)).
-2. Adicione o relatório `HTML` no seu fork.
-3. No Moodle, submeta apenas a URL do seu `fork`.
+A partir de 2025, as curvas deixam de seguir o mesmo padrão:
 
-Responda às questões abaixo diretamente neste arquivo `README.md` do seu fork:
+- **`set`** sofre a maior alteração do gráfico: cai de 2.033 (2024) para 387 (2025), uma redução de cerca de 81%. Ela não chega a zero, como poderia parecer no gráfico por causa da escala, e em 2026 se mantém em um patamar baixo (449).
+- **`list`** atinge o pico em 2025 (45.948) e cai cerca de 6,8% em 2026 (42.816).
+- **`tuple`** atinge o pico em 2025 (31.817) e cai cerca de 15,4% em 2026 (26.922).
+- **`dictionary`** é a única estrutura que continua crescendo, chegando a 15.881 em 2026, um aumento de cerca de 11,6% em relação a 2025. Desde 2021, o crescimento acumulado é de aproximadamente 6,6 vezes.
 
-1. Repositório selecionado: <URL_DO_REPOSITORIO_SELECIONADO_AQUI>
-2. Gráfico selecionado: <IMAGEM_DO_GRAFICO_SELECIONADO_AQUI>
-3. Explicação: <EXPLICACAO_AQUI>
+Os dados de 2026 correspondem a um ano ainda em andamento, portanto a queda de `list` e `tuple` pode estar parcialmente associada a esse fato e deve ser interpretada com cautela.
 
+### Interpretação
 
+Minha interpretação é que o gráfico indica um processo de **consolidação e simplificação do código**: após anos de crescimento acelerado, `list` e `tuple` deixam de aumentar e passam a diminuir, enquanto `dictionary` segue em alta. Uma hipótese é que estruturas de dados posicionais (listas e tuplas) estejam sendo substituídas por estruturas nomeadas (dicionários), que deixam o código mais legível e menos dependente da ordem dos elementos. Isso estaria de acordo com boas práticas de legibilidade e manutenção.
 
+Essa hipótese, porém, tem limitações:
+
+- A redução somada de `list` e `tuple` entre 2025 e 2026 (cerca de 8.000 ocorrências) é bem maior que o aumento de `dictionary` (cerca de 1.650). Logo, a troca direta de listas e tuplas por dicionários não explica sozinha a queda; é provável que parte do código tenha sido simplesmente removida ou reorganizada.
+- O gráfico mostra a quantidade de ocorrências, mas não o motivo das mudanças. A queda brusca de `set` em 2025, em particular, sugere a remoção ou a reescrita de um conjunto grande de arquivos, o que só pode ser confirmado consultando o histórico de commits e a documentação do repositório.
